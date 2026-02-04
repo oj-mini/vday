@@ -93,9 +93,11 @@
 
     /* ⭐ NEW small picture style */
     .mini-pic {
-      width: 180px;
-      margin-top: 14px;
-      border-radius: 12px;
+      width: 220px;
+      margin: 16px auto;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+      display: block;
     }
 
     .hint { margin-top: 10px; font-size: 13px; opacity: .7; }
@@ -236,18 +238,27 @@
     noBtn.addEventListener("click", e => e.preventDefault());
 
     /* ---------- YES CLICK ---------- */
-    yesBtn.addEventListener("click", () => {
-      zone.style.display = "none";
-      hint.style.display = "none";     // HIDE THE HINT
-      result.style.display = "block";
-      resizeConfettiCanvas();
-      fullScreenConfetti();
+    yesBtn.addEventListener("click", async () => {
 
+  // show result FIRST (never fails)
+     zone.style.display = "none";
+     hint.style.display = "none";
+     result.style.display = "block";
 
+  // confetti
+     resizeConfettiCanvas();
+     fullScreenConfetti();
 
-      // ⭐ play music on click
-      music.play();
-    });
+  // safe music play (won't break button if blocked)
+     try {
+       music.currentTime = 0;
+       music.volume = 1;
+       await music.play();
+  }    catch (e) {
+       console.log("Music blocked by browser:", e);
+  }
+});
+
   </script>
 </body>
 </html>
